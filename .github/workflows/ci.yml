@@ -46,8 +46,8 @@ jobs:
 
   auto-deploy-docker-job:
     needs: release-docker-image-job
-    # runs-on: ubuntu-latest
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
+    # runs-on: self-hosted
     env:
       CONTAINER_NAME: 'node-app'
       DOCKER_IMAGE_URL: 'ghcr.io/${{ github.actor }}/${{ github.event.repository.name }}:${{  github.ref_name }}'
@@ -55,14 +55,14 @@ jobs:
     - name: Execute SSH commmands on remote server
       uses: JimCronqvist/action-ssh@master
       with:
-        hosts: 'root@159.223.41.181'
+        hosts: 'superuser@123.253.62.249'
         privateKey: ${{ secrets.My_PRIVATE_KEY }}
         command: |
           docker logout ghcr.io
           docker login -u ${{ github.actor }} -p ${{ secrets.GITHUB_TOKEN }}  ghcr.io/${{ github.actor }}/${{ github.event.repository.name }}
           docker rm -f ${{ env.CONTAINER_NAME }}
           docker pull ${{ env.DOCKER_IMAGE_URL }}
-          docker run --restart=always -d --name ${{ env.CONTAINER_NAME }} -p 9002:3000 ${{ env.DOCKER_IMAGE_URL }}
+          docker run --restart=always -d --name ${{ env.CONTAINER_NAME }} -p 9066:3000 ${{ env.DOCKER_IMAGE_URL }}
         
 
 
