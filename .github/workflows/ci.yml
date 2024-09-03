@@ -27,12 +27,12 @@ jobs:
     runs-on: ubuntu-latest
     env:
       CONTAINER_NAME: 'node-app'
-      DOCKER_IMAGE_URL: 'ghcr.io/${{ github.actor }}/${{ github.event.repository.name }}:${{  github.ref_name }}'
+      DOCKER_IMAGE_URL: 'ghcr.io/${{ github.actor }}/${{ github.event.repository.name }}:${{ github.ref_name }}'
     steps:
       - name: Convert variables to lowercase
         run: |
-          LOWERCASE_CONTAINER_NAME=$(echo "${{ env.CONTAINER_NAME }}" | tr '[:upper:]' '[:lower:]')
-          LOWERCASE_DOCKER_IMAGE_URL=$(echo "${{ env.DOCKER_IMAGE_URL }}" | tr '[:upper:]' '[:lower:]')
+          export LOWERCASE_CONTAINER_NAME=$(echo "${{ env.CONTAINER_NAME }}" | tr '[:upper:]' '[:lower:]')
+          export LOWERCASE_DOCKER_IMAGE_URL=$(echo "${{ env.DOCKER_IMAGE_URL }}" | tr '[:upper:]' '[:lower:]')
           echo "Lowercase Docker Image URL: $LOWERCASE_DOCKER_IMAGE_URL"
           echo "Lowercase Container Name: $LOWERCASE_CONTAINER_NAME"
 
@@ -47,8 +47,7 @@ jobs:
             sudo docker rm -f $LOWERCASE_CONTAINER_NAME
             sudo docker pull $LOWERCASE_DOCKER_IMAGE_URL
             sudo docker run --restart=always -d --name $LOWERCASE_CONTAINER_NAME -p 9066:3000 $LOWERCASE_DOCKER_IMAGE_URL
-
-        
+      
 
 
             
